@@ -9,7 +9,19 @@ def encrypt_vigenere(plaintext: str, keyword: str) -> str:
     'LXFOPVEFRNHR'
     """
     ciphertext = ""
-    # PUT YOUR CODE HERE
+
+    keyword_repeated = (keyword * (len(plaintext) // len(keyword))) + keyword[:len(plaintext) % len(keyword)]
+
+    for i in range(len(plaintext)): 
+        if plaintext[i].isalpha():
+            shift = ord(keyword_repeated[i].upper()) - ord('A')
+            if plaintext[i].isupper():
+                ciphertext = ciphertext + (chr((ord(plaintext[i]) + shift - ord('A')) % 26 + ord('A')))
+            else:
+                ciphertext = ciphertext + (chr((ord(plaintext[i]) + shift - ord('a')) % 26 + ord('a')))
+        else:
+            ciphertext = ciphertext + plaintext[i]
+
     return ciphertext
 
 

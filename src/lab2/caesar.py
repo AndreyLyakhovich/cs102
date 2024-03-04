@@ -41,5 +41,18 @@ def decrypt_caesar(ciphertext: str, shift: int = 3) -> str:
     ''
     """
     plaintext = ""
-    # PUT YOUR CODE HERE
+    ALPHA = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+    alpha = "abcdefghijklmnopqrstuvwxyz"
+
+    for letter in ciphertext:
+        if letter in ALPHA or alpha:
+            if letter in ALPHA:
+                letter_index = (ALPHA.find(letter) - shift) % len(ALPHA)
+                plaintext = plaintext + ALPHA[letter_index]
+            elif letter in alpha:
+                letter_index = (alpha.find(letter) - shift) % len(alpha)
+                plaintext = plaintext + alpha[letter_index]
+            else:
+                plaintext = plaintext + str(letter)
+
     return plaintext

@@ -36,5 +36,16 @@ def decrypt_vigenere(ciphertext: str, keyword: str) -> str:
     'ATTACKATDAWN'
     """
     plaintext = ""
-    # PUT YOUR CODE HERE
+    keyword_repeated = (keyword * (len(ciphertext) // len(keyword))) + keyword[:len(ciphertext) % len(keyword)]
+
+    for i in range (len(ciphertext)):
+        if ciphertext[i].isalpha():
+            shift = ord(keyword_repeated[i].upper()) - ord('A')
+            if ciphertext[i].isupper():
+                plaintext = plaintext + (chr((ord(ciphertext[i]) - shift - ord('A')) % 26 + ord('A')))
+            else: 
+                plaintext = plaintext + (chr((ord(ciphertext[i]) - shift - ord('a')) % 26 + ord('a')))
+        else:
+            plaintext = plaintext + ciphertext[i]
+
     return plaintext

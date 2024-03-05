@@ -32,7 +32,12 @@ def gcd(a: int, b: int) -> int:
     >>> gcd(3, 7)
     1
     """
-    # PUT YOUR CODE HERE
+    r = a%b
+    while r:
+        a=b 
+        b=r
+        r=a%b
+    return b
     pass
 
 

@@ -48,8 +48,16 @@ def multiplicative_inverse(e: int, phi: int) -> int:
     >>> multiplicative_inverse(7, 40)
     23
     """
-    # PUT YOUR CODE HERE
+    return extendedEuclid(e, phi)[1] % phi
     pass
+
+def extendedEuclid(e: int, phi: int):
+    if phi == 0:
+        return e, 1, 0
+    else: 
+        d2, x2, y2 = extendedEuclid(phi, e%phi)
+        d, x, y = d2, y2, x2 - (e // phi) * y2
+        return d, x, y
 
 
 def generate_keypair(p: int, q: int) -> tp.Tuple[tp.Tuple[int, int], tp.Tuple[int, int]]:
@@ -58,12 +66,9 @@ def generate_keypair(p: int, q: int) -> tp.Tuple[tp.Tuple[int, int], tp.Tuple[in
     elif p == q:
         raise ValueError("p and q cannot be equal")
 
-    # n = pq
-    # PUT YOUR CODE HERE
-
-    # phi = (p-1)(q-1)
-    # PUT YOUR CODE HERE
-
+    n = p*q
+    phi = (p-1)*(q-1)
+    
     # Choose an integer e such that e and phi(n) are coprime
     e = random.randrange(1, phi)
 

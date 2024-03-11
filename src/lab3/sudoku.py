@@ -131,6 +131,13 @@ def find_possible_values(grid: tp.List[tp.List[str]], pos: tp.Tuple[int, int]) -
     >>> values == {'2', '5', '9'}
     True
     """
+    row = get_row(grid, pos)
+    col = get_col(grid, pos)
+    block = get_block(grid, pos)
+    val_set = set(range(1,10))
+    rem_set = set(row + col + block)
+    new_val = set(val_set - rem_set)
+    return new_val 
     pass
 
 

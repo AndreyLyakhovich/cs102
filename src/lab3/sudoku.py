@@ -90,6 +90,16 @@ def get_block(grid: tp.List[tp.List[str]], pos: tp.Tuple[int, int]) -> tp.List[s
     >>> get_block(grid, (8, 8))
     ['2', '8', '.', '.', '.', '5', '.', '7', '9']
     """
+    block = [] 
+    i = pos[0]//3
+    j = pos[1]//3
+    ri = range(i*3, (i*3)+3)
+    rj = range(j*3, (j*3)+3)
+    for ni in ri:
+        for nj in rj:
+            n  = grid[ni][nj]
+            block.append(n)
+    return block
     pass
 
 
@@ -102,6 +112,12 @@ def find_empty_positions(grid: tp.List[tp.List[str]]) -> tp.Optional[tp.Tuple[in
     >>> find_empty_positions([['1', '2', '3'], ['4', '5', '6'], ['.', '8', '9']])
     (2, 0)
     """
+    emp_pos = tp.Tuple[int, int]
+    for i in range(0, len(grid)):
+        for j in range(0, len(grid)):
+            if grid[i][j] == '.':
+                emp_pos = (i, j)
+                return emp_pos
     pass
 
 
@@ -115,6 +131,13 @@ def find_possible_values(grid: tp.List[tp.List[str]], pos: tp.Tuple[int, int]) -
     >>> values == {'2', '5', '9'}
     True
     """
+    row = get_row(grid, pos)
+    col = get_col(grid, pos)
+    block = get_block(grid, pos)
+    val_set = set(range(1,10))
+    rem_set = set(row + col + block)
+    new_val = set(val_set - rem_set)
+    return new_val 
     pass
 
 
@@ -130,6 +153,7 @@ def solve(grid: tp.List[tp.List[str]]) -> tp.Optional[tp.List[tp.List[str]]]:
     >>> solve(grid)
     [['5', '3', '4', '6', '7', '8', '9', '1', '2'], ['6', '7', '2', '1', '9', '5', '3', '4', '8'], ['1', '9', '8', '3', '4', '2', '5', '6', '7'], ['8', '5', '9', '7', '6', '1', '4', '2', '3'], ['4', '2', '6', '8', '5', '3', '7', '9', '1'], ['7', '1', '3', '9', '2', '4', '8', '5', '6'], ['9', '6', '1', '5', '3', '7', '2', '8', '4'], ['2', '8', '7', '4', '1', '9', '6', '3', '5'], ['3', '4', '5', '2', '8', '6', '1', '7', '9']]
     """
+    
     pass
 
 
@@ -172,3 +196,13 @@ if __name__ == "__main__":
             print(f"Puzzle {fname} can't be solved")
         else:
             display(solution)
+    
+    grid = read_sudoku('puzzle1.txt')
+    values = find_possible_values(grid, (4,7))
+    row = get_row(grid, (4,7))
+    col = get_col(grid, (4,7))
+    block = get_block(grid, (4,7))
+    print(block)
+    print(row)
+    print(col) 
+    print(values)

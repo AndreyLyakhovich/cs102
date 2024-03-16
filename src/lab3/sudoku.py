@@ -129,6 +129,7 @@ def find_empty_positions(grid: tp.List[tp.List[str]]) -> tp.Optional[tp.Tuple[in
             if grid[i][j] == '.':
                 emp_pos = (i, j)
                 return emp_pos
+    return 
     pass
 
 
@@ -147,10 +148,17 @@ def find_possible_values(grid: tp.List[tp.List[str]], pos: tp.Tuple[int, int]) -
     block = get_block(grid, pos)
     val_set = set(range(1,10))
     rem_set = set(row + col + block)
-    new_val = set(val_set - rem_set)
+    #print(rem_set - val_set)
+    new_val = set(rem_set - val_set)
+    new_val.remove(".")
     return new_val 
     pass
 
+def is_complete(grid: tp.List[tp.List[str]]):
+    for row in grid:
+        if '.' in row:
+            return False
+    return True
 
 def solve(grid: tp.List[tp.List[str]]) -> tp.Optional[tp.List[tp.List[str]]]:
     """ Решение пазла, заданного в grid """

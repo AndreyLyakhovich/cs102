@@ -102,6 +102,17 @@ def get_block(grid: tp.List[tp.List[str]], pos: tp.Tuple[int, int]) -> tp.List[s
     return block
     pass
 
+def possible(grid: tp.List[tp.List[str]], pos: tp.Tuple[int, int], number):
+    row = get_row(grid, pos)
+    col = get_col(grid, pos)
+    block = get_block(grid, pos)
+    if str(number) in row:
+        return False
+    if str(number) in col:
+        return False
+    if str(number) in block:
+        return False
+    return True
 
 def find_empty_positions(grid: tp.List[tp.List[str]]) -> tp.Optional[tp.Tuple[int, int]]:
     """Найти первую свободную позицию в пазле
@@ -118,6 +129,7 @@ def find_empty_positions(grid: tp.List[tp.List[str]]) -> tp.Optional[tp.Tuple[in
             if grid[i][j] == '.':
                 emp_pos = (i, j)
                 return emp_pos
+    return 
     pass
 
 
@@ -136,10 +148,17 @@ def find_possible_values(grid: tp.List[tp.List[str]], pos: tp.Tuple[int, int]) -
     block = get_block(grid, pos)
     val_set = set(range(1,10))
     rem_set = set(row + col + block)
-    new_val = set(val_set - rem_set)
+    #print(rem_set - val_set)
+    new_val = set(rem_set - val_set)
+    new_val.remove(".")
     return new_val 
     pass
 
+def is_complete(grid: tp.List[tp.List[str]]):
+    for row in grid:
+        if '.' in row:
+            return False
+    return True
 
 def solve(grid: tp.List[tp.List[str]]) -> tp.Optional[tp.List[tp.List[str]]]:
     """ Решение пазла, заданного в grid """
@@ -153,13 +172,29 @@ def solve(grid: tp.List[tp.List[str]]) -> tp.Optional[tp.List[tp.List[str]]]:
     >>> solve(grid)
     [['5', '3', '4', '6', '7', '8', '9', '1', '2'], ['6', '7', '2', '1', '9', '5', '3', '4', '8'], ['1', '9', '8', '3', '4', '2', '5', '6', '7'], ['8', '5', '9', '7', '6', '1', '4', '2', '3'], ['4', '2', '6', '8', '5', '3', '7', '9', '1'], ['7', '1', '3', '9', '2', '4', '8', '5', '6'], ['9', '6', '1', '5', '3', '7', '2', '8', '4'], ['2', '8', '7', '4', '1', '9', '6', '3', '5'], ['3', '4', '5', '2', '8', '6', '1', '7', '9']]
     """
-    
+    for row in range(0, 9):
+        for col in range(0, 9):
+            if grid[row][col] == '.':
+                pos_val = find_possible_values(grid, (row, col))
+                for number in range(1,10):
+                    if possible(grid, (row, col), number):
+                        grid[row][col] = str(number)
+                        solve(grid)
+                        grid[row][col] = '.'
+                return 
+    print(grid)
+
     pass
 
 
 def check_solution(solution: tp.List[tp.List[str]]) -> bool:
     """ Если решение solution верно, то вернуть True, в противном случае False """
     # TODO: Add doctests with bad puzzles
+    
+    if find_empty_positions(solution) is None:
+        return True
+    else: 
+        return False
     pass
 
 
@@ -202,7 +237,4 @@ if __name__ == "__main__":
     row = get_row(grid, (4,7))
     col = get_col(grid, (4,7))
     block = get_block(grid, (4,7))
-    print(block)
-    print(row)
-    print(col) 
     print(values)

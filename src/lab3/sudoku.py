@@ -129,7 +129,7 @@ def find_empty_positions(grid: tp.List[tp.List[str]]) -> tp.Optional[tp.Tuple[in
             if grid[i][j] == '.':
                 emp_pos = (i, j)
                 return emp_pos
-    return 
+    return  
     pass
 
 
@@ -172,16 +172,17 @@ def solve(grid: tp.List[tp.List[str]]) -> tp.Optional[tp.List[tp.List[str]]]:
     >>> solve(grid)
     [['5', '3', '4', '6', '7', '8', '9', '1', '2'], ['6', '7', '2', '1', '9', '5', '3', '4', '8'], ['1', '9', '8', '3', '4', '2', '5', '6', '7'], ['8', '5', '9', '7', '6', '1', '4', '2', '3'], ['4', '2', '6', '8', '5', '3', '7', '9', '1'], ['7', '1', '3', '9', '2', '4', '8', '5', '6'], ['9', '6', '1', '5', '3', '7', '2', '8', '4'], ['2', '8', '7', '4', '1', '9', '6', '3', '5'], ['3', '4', '5', '2', '8', '6', '1', '7', '9']]
     """
-    for row in range(0, 9):
-        for col in range(0, 9):
-            if grid[row][col] == '.':
-                pos_val = find_possible_values(grid, (row, col))
-                for number in range(1,10):
-                    if possible(grid, (row, col), number):
-                        grid[row][col] = str(number)
-                        solve(grid)
-                        grid[row][col] = '.'
-                return 
+    while (find_empty_positions(grid) != None):
+        for row in range(0, 9):
+            for col in range(0, 9):
+                if grid[row][col] == '.':
+                    for number in range(1,10):
+                        if possible(grid, (row, col), number):
+                            grid[row][col] = str(number)
+                            solve(grid)
+                            grid[row][col] = '.'
+                    return 
+
     print(grid)
 
     pass
@@ -190,11 +191,11 @@ def solve(grid: tp.List[tp.List[str]]) -> tp.Optional[tp.List[tp.List[str]]]:
 def check_solution(solution: tp.List[tp.List[str]]) -> bool:
     """ Если решение solution верно, то вернуть True, в противном случае False """
     # TODO: Add doctests with bad puzzles
-    
-    if find_empty_positions(solution) is None:
-        return True
-    else: 
-        return False
+    for i in range(0, 9):
+        for j in range(0, 9):
+            if solution[i][j] == '.':
+                return False
+    return True
     pass
 
 
@@ -227,6 +228,7 @@ if __name__ == "__main__":
         grid = read_sudoku(fname)
         display(grid)
         solution = solve(grid)
+        ##check_solution(solution)
         if not solution:
             print(f"Puzzle {fname} can't be solved")
         else:
@@ -234,7 +236,4 @@ if __name__ == "__main__":
     
     grid = read_sudoku('puzzle1.txt')
     values = find_possible_values(grid, (4,7))
-    row = get_row(grid, (4,7))
-    col = get_col(grid, (4,7))
-    block = get_block(grid, (4,7))
     print(values)
